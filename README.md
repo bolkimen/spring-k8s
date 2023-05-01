@@ -14,7 +14,10 @@ sudo chown nobody:nogroup /mnt/persistForKuber
 sudo chmod 777 /mnt/persistForKuber
 ```
 
-
+List namespaces
+```
+kubectl get ns
+```
 List persistent volumes
 ```
 kubectl get pv
