@@ -27,6 +27,13 @@ List persistent volume claim
 kubectl get pvc
 ```
 
+## Debug
+
+Run shell on debug pod
+```
+kubectl exec -it debug-pv-pod -- /bin/bash
+```
+
 ## Monitoring
 
 prometeus
