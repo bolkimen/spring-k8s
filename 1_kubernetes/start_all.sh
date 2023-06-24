@@ -18,4 +18,5 @@ export KUBERNETES_NAMESPACE=bolkimen-spring-k8s-ns
 
 
 $SCRIPT_DIR/1_init.sh
+$SCRIPT_DIR/2_monitoring.sh
 

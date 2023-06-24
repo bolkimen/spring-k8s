@@ -10,3 +10,8 @@ do
    kubectl delete secret docker.registry -n $ns
 done
 
+
+# Additional steps for monitoring
+kubectl delete clusterrolebinding prometheus
+kubectl delete clusterrole prometheus
+
