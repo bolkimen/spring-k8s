@@ -3,7 +3,7 @@ apiVersion: v1
 kind: PersistentVolume
 metadata:
   # Name the persistent chain
-  name: prometheus
+  name: prometheus-storage
   # Labels for identifying PV
   labels:
     type: local
@@ -25,7 +25,8 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   # Name the volume chain
-  name: prometheus
+  name: prometheus-storage
+  namespace: $MONITORING_NAMESPACE
 spec:
   storageClassName: manual
   accessModes:

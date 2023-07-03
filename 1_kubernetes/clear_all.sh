@@ -15,6 +15,5 @@ done
 kubectl delete clusterrolebinding prometheus
 kubectl delete clusterrole prometheus
 
-kubectl delete pvc prometheus
-kubectl delete pv prometheus
+kubectl delete pv prometheus-storage
 
