@@ -14,9 +14,11 @@ fi
 
 
 export MONITORING_NAMESPACE=bolkimen-monitoring-ns
+export DATABASE_NAMESPACE=bolkimen-database-ns
 export KUBERNETES_NAMESPACE=bolkimen-spring-k8s-ns
 
 
 $SCRIPT_DIR/1_init.sh
 $SCRIPT_DIR/2_monitoring.sh
+$SCRIPT_DIR/3_database.sh
 
