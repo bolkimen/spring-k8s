@@ -43,6 +43,6 @@ spec:
             name: prometheus-server-conf
   
         - name: prometheus-storage-volume
-          persistentVolumeClaim:
-            claimName: prometheus-storage
-          #emptyDir: {}
+          #persistentVolumeClaim:
+          #  claimName: prometheus-storage
+          emptyDir: {}
