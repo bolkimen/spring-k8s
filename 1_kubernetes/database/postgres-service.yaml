@@ -13,6 +13,7 @@ spec:
   ports:
     # The port number to expose the service
     - port: 5432
+      targetPort: database-port
   # Pod to route service traffic  
   selector:
     app: postgresdb

@@ -19,3 +19,5 @@ kubectl delete clusterrole prometheus
 kubectl delete pv prometheus-storage
 kubectl delete pv postgresdb-persistent-volume
 
+ps aux | grep forward | grep -v grep | awk {'print $2'} | xargs kill
+

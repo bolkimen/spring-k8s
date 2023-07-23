@@ -24,6 +24,7 @@ spec:
             - "--storage.tsdb.path=/prometheus/"
           ports:
             - containerPort: 9090
+              name: prometheus-port
           resources:
             requests:
               cpu: 500m

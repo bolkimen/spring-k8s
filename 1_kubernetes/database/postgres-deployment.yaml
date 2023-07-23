@@ -8,7 +8,7 @@ metadata:
   namespace: $DATABASE_NAMESPACE
 spec:
   # Replicas for this Deployment
-  replicas: 3
+  replicas: 1
   selector:
     # labels the pods
     matchLabels:
@@ -27,6 +27,7 @@ spec:
           ports:
             # Assign ports to expose container
             - containerPort: 5432
+              name: database-port
           envFrom:
             # Load the environment variables/PostgresSQL credentials
             - configMapRef:
