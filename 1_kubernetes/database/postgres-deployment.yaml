@@ -37,6 +37,21 @@ spec:
             # The volume mounts  for the container
             - mountPath: /var/lib/postgresql_tmp/data
               name: db-data
+        - name: postgresdb-monitoring
+          # pull postgresimage from docker hub
+          image: prometheuscommunity/postgres-exporter
+          ports:
+            # Assign ports to expose container
+            - containerPort: 9187
+              name: db-prom-port
+          env:
+            - name: DATA_SOURCE_NAME
+              value: "postgresql://testUser:testPassword@postgresdb:5432/testDB?sslmode=disable"
+          envFrom:
+            # Load the environment variables/PostgresSQL credentials
+            - configMapRef:
+                # This should be the ConfigMap name created ealier
+                name: db-secret-credentials
       # Volumes attached to the pod
       volumes:
         - name: db-data

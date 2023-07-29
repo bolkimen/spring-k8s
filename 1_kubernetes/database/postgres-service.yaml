@@ -7,13 +7,20 @@ metadata:
   namespace: $DATABASE_NAMESPACE
   labels:
     app: postgresdb
+  annotations:
+    prometheus.io/scrape: 'true'
+    prometheus.io/port:   '9187'
 spec:
   # Choose how to expose your service
   type: NodePort
   ports:
     # The port number to expose the service
-    - port: 5432
+    - name: db-port
+      port: 5432
       targetPort: database-port
+    - name: db-mon-port
+      port: 9187
+      targetPort: db-prom-port
   # Pod to route service traffic  
   selector:
     app: postgresdb
