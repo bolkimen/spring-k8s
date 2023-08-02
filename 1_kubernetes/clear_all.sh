@@ -17,8 +17,9 @@ done
 kubectl delete clusterrolebinding prometheus
 kubectl delete clusterrole prometheus
 
+kubectl delete pv grafana-volume
 kubectl delete pv prometheus-storage
-kubectl delete pv postgresdb-persistent-volume
+kubectl delete pv postgresdb-storage
 
 ps aux | grep forward | grep -v grep | awk {'print $2'} | xargs kill
 

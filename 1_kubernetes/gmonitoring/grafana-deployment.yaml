@@ -21,6 +21,25 @@ spec:
           ports:
             - containerPort: 3000
               name: grafana-port
+              protocol: TCP
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /robots.txt
+              port: 3000
+              scheme: HTTP
+            initialDelaySeconds: 10
+            periodSeconds: 30
+            successThreshold: 1
+            timeoutSeconds: 2
+          livenessProbe:
+            failureThreshold: 3
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            successThreshold: 1
+            tcpSocket:
+              port: 3000
+            timeoutSeconds: 1
           resources:
             requests:
               cpu: 500m
@@ -28,4 +47,12 @@ spec:
             limits:
               cpu: 1
               memory: 1Gi
+          volumeMounts:
+            - mountPath: /var/lib/grafana
+              name: grafana-pv
+      volumes:
+        - name: grafana-pv
+          #persistentVolumeClaim:
+          #  claimName: grafana-storage-claim
+          emptyDir: {}
 

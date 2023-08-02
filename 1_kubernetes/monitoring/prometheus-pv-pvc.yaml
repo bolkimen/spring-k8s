@@ -25,7 +25,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   # Name the volume chain
-  name: prometheus-storage
+  name: prometheus-storage-claim
   namespace: $MONITORING_NAMESPACE
 spec:
   storageClassName: manual
