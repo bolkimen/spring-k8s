@@ -5,7 +5,7 @@ export GMONITORING_NAMESPACE=bolkimen-gmonitoring-ns
 export DATABASE_NAMESPACE=bolkimen-database-ns
 export KUBERNETES_NAMESPACE=bolkimen-spring-k8s-ns
 
-kubectl delete namespaces $MONITORING_NAMESPACE $GMONITORING_NAMESPACE $DATABASE_NAMESPACE $KUBERNETES_NAMESPACE
+kubectl delete namespaces $MONITORING_NAMESPACE $GMONITORING_NAMESPACE $DATABASE_NAMESPACE $KUBERNETES_NAMESPACE $KAFKA_NAMESPACE
 
 for ns in $(kubectl get namespaces |grep -v NAME|awk '{print $1}')
 do

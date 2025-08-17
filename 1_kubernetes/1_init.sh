@@ -5,6 +5,7 @@ kubectl create namespace $MONITORING_NAMESPACE
 kubectl create namespace $GMONITORING_NAMESPACE
 kubectl create namespace $DATABASE_NAMESPACE
 kubectl create namespace $KUBERNETES_NAMESPACE
+kubectl create namespace $KAFKA_NAMESPACE
 
 
 # Setup dockerhub credentials
