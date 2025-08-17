@@ -8,8 +8,11 @@ fi
 echo "SCRIPT_DIR: $SCRIPT_DIR"
 echo "KAFKA_NAMESPACE: $KAFKA_NAMESPACE"
 
-envsubst < $SCRIPT_DIR/kafka/kafka-deployment.yaml | kubectl apply -f -
-envsubst < $SCRIPT_DIR/kafka/kafka-service.yaml | kubectl apply -f -
+envsubst < $SCRIPT_DIR/kafka/kafka-test.yaml | kubectl apply -f -
+
+#envsubst < $SCRIPT_DIR/kafka/kafka-config-map.yaml | kubectl apply -f -
+#envsubst < $SCRIPT_DIR/kafka/kafka-deployment.yaml | kubectl apply -f -
+#envsubst < $SCRIPT_DIR/kafka/kafka-service.yaml | kubectl apply -f -
 
 
 kubectl wait pods -n $KAFKA_NAMESPACE -l app=kafka-server --for condition=Ready --timeout=90s

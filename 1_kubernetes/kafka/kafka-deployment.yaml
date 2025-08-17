@@ -22,6 +22,10 @@ spec:
             - containerPort: 9092
               name: kafka-port
               protocol: TCP
+          envFrom:
+            # Load the environment Kafka settings
+            - configMapRef:
+                name: kafka-env-settings
           livenessProbe:
             failureThreshold: 3
             initialDelaySeconds: 30
