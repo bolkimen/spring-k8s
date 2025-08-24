@@ -34,6 +34,9 @@ Run shell on debug pod
 kubectl exec -it debug-pv-pod -- /bin/bash
 ```
 
+Ingress:
+kubectl describe ing nginx-app-ingress -n bolkimen-nginx-ns
+
 ## Monitoring
 
 prometeus
