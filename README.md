@@ -37,6 +37,9 @@ kubectl exec -it debug-pv-pod -- /bin/bash
 Ingress:
 kubectl describe ing nginx-app-ingress -n bolkimen-nginx-ns
 
+https://gateway.envoyproxy.io/latest/tasks/quickstart/
+kubectl apply -f https://github.com/envoyproxy/gateway/releases/download/latest/quickstart.yaml -n default
+
 ## Monitoring
 
 prometeus
