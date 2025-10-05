@@ -9,7 +9,8 @@ spec:
   selector:
     app: nginx-app
   ports:
-    - protocol: TCP
+    - name: http
+      protocol: TCP
       port: 80       # service port
       targetPort: 80 # container port
   type: ClusterIP   # change to NodePort or LoadBalancer if you want external access
