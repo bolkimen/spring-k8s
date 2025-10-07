@@ -27,6 +27,9 @@ List persistent volume claim
 kubectl get pvc
 ```
 
+## AWS emulator:
+https://docs.getmoto.org/en/latest/docs/server_mode.html
+
 ## Debug
 
 Run shell on debug pod
