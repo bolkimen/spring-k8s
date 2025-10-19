@@ -1,0 +1,7 @@
+MONITORING_NAMESPACE=bolkimen-monitoring-ns
+GMONITORING_NAMESPACE=bolkimen-gmonitoring-ns
+DATABASE_NAMESPACE=bolkimen-database-ns
+KUBERNETES_NAMESPACE=bolkimen-spring-k8s-ns
+KAFKA_NAMESPACE=bolkimen-kafka-ns
+DOCKERHUB_USER=bolkimen
+DOCKERHUB_PASSWORD=j3923eh2

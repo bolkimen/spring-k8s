@@ -29,6 +29,7 @@ kubectl get pvc
 
 ## AWS emulator:
 https://docs.getmoto.org/en/latest/docs/server_mode.html
+https://docs.aws.amazon.com/prescriptive-guidance/latest/patterns/test-aws-infra-localstack-terraform.html
 
 ## Debug
 

@@ -1,0 +1,1 @@
+mvn archetype:generate -DgroupId=com.bolkimen.microservice -DartifactId=spring_cloud
