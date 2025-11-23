@@ -7,6 +7,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 
+import java.util.Collections;
+
 @Component
 public class ServiceBServiceClient {
     private final WebClient webClient;
@@ -19,7 +21,8 @@ public class ServiceBServiceClient {
         return webClient.get()
                 .uri(uriBuilder -> uriBuilder.pathSegment("api","serviceb").build())
                 .retrieve()
-                .bodyToFlux(BRecord.class);
+                .bodyToFlux(BRecord.class)
+                .onErrorReturn(new BRecord(null));
                 //.switchIfEmpty(Flux.error(new NotFoundException("No records")))
                 //.onErrorResume(err->Flux.error(new NotFoundException("No records")));
     }
