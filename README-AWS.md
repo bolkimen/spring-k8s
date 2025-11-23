@@ -14,3 +14,5 @@ aws dynamodb describe-table --table-name Table1 --no-cli-auto-prompt
 
 aws ec2 describe-instances --output table --region eu-central-1 --profile localstack
 
+https://docs.getmoto.org/en/stable/docs/getting_started.html
+
