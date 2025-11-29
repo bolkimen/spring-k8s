@@ -9,13 +9,14 @@ import org.springframework.web.reactive.function.client.WebClient;
 @Configuration
 public class WebClientConfig {
     @Bean("defaultWebClientBuilder")
-    //@LoadBalanced
+    @LoadBalanced
     public WebClient.Builder defaultWebClientBuilder() {
         return WebClient.builder();
     }
 
     @Bean("serviceBClient")
     public WebClient serviceBWebClient(@Qualifier("defaultWebClientBuilder") WebClient.Builder webClientBuilder) {
-        return webClientBuilder.baseUrl("http://127.0.0.1:8091").build();
+        return webClientBuilder.baseUrl("http://service-b")
+                .build();
     }
 }
