@@ -25,11 +25,11 @@ public class ServiceGatewayApplication {
 				.route(p -> p
 						.path("/api/servicea/**")
 						.filters(f -> f.addRequestHeader("Hello", "World"))
-						.uri("http://127.0.0.1:8090"))
+						.uri("lb://service-a"))
 				.route(p -> p
 						.path("/api/serviceb/**")
 						.filters(f -> f.addRequestHeader("Hello", "World"))
-						.uri("http://127.0.0.1:8091"))
+						.uri("lb://service-b"))
 				.build();
 	}
 
