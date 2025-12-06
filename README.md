@@ -30,7 +30,7 @@ kubectl get pvc
 http://localhost:8761/
 http://localhost:8073/api/servicea/ab
 http://192.168.0.199:8090/api/servicea/ab
-http://192.168.0.199:8091/api/serviceb/
+http://192.168.0.199:8091/api/serviceb
 
 ## AWS emulator:
 https://docs.getmoto.org/en/latest/docs/server_mode.html
