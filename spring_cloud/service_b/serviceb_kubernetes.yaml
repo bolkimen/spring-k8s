@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: spring-service-b
+    proj: spring-cloud-test
+  name: spring-service-b
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: spring-service-b
+      proj: spring-cloud-test
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: spring-service-b
+        proj: spring-cloud-test
+    spec:
+      containers:
+        - image: bolkimen/service_b:0.0.1-SNAPSHOT
+          name: spring-service-b
+          resources: {}
+          imagePullPolicy: IfNotPresent
+status: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: spring-service-b
+    proj: spring-cloud-test
+  name: spring-service-b
+spec:
+  ports:
+    - name: 7091-8091
+      port: 7091
+      protocol: TCP
+      targetPort: 8091
+  selector:
+    app: spring-service-b
+    proj: spring-cloud-test
+  type: ClusterIP
+status:
+  loadBalancer: {}
