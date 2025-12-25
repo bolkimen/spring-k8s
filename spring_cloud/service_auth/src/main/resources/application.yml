@@ -1,0 +1,42 @@
+server:
+  port: 8092
+
+logging:
+  level:
+    org.springframework.security: trace
+
+spring:
+  application:
+    name: service_auth
+  security:
+    oauth2:
+      authorizationserver:
+        client:
+          messaging-client:
+            registration:
+              client-id: "messaging-client"
+              client-secret: "{noop}secret"
+              client-authentication-methods:
+                - "client_secret_basic"
+              authorization-grant-types:
+                - "authorization_code"
+                - "refresh_token"
+                - "client_credentials"
+              redirect-uris:
+                - "http://127.0.0.1:${server.port}/login/oauth2/code/messaging-client-oidc"
+                - "http://127.0.0.1:${server.port}/authorized"
+              post-logout-redirect-uris:
+                - "http://127.0.0.1:${server.port}/logged-out"
+              scopes:
+                - "openid"
+                - "profile"
+                - "message.read"
+                - "message.write"
+            require-authorization-consent: true
+
+eureka:
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka
