@@ -16,3 +16,4 @@ aws ec2 describe-instances --output table --region eu-central-1 --profile locals
 
 https://docs.getmoto.org/en/stable/docs/getting_started.html
 
+https://github.com/localstack-samples
