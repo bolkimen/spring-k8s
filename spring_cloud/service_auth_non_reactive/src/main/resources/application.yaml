@@ -68,3 +68,10 @@ spring:
                 - "message:read"
                 - "message:write"
             require-authorization-consent: true
+
+eureka:
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka

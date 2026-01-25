@@ -19,26 +19,8 @@ import static org.springframework.web.reactive.function.server.RouterFunctions.r
 //@EnableWebFluxSecurity
 public class DefaultSecurityConfig {
 
-    @Bean
-    public RouterFunction<ServerResponse> routes(PublicHelloController publicHelloController) {
-        return route(GET("/test"), publicHelloController::hello);
-    }
 
     /*@Bean
-    public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
-        http
-                .authorizeExchange()
-                .pathMatchers("/public/**").permitAll()
-                .anyExchange().authenticated()
-                .and()
-                .httpBasic()
-                .and()
-                .formLogin();
-
-        return http.build();
-    }*/
-
-    @Bean
     public MapReactiveUserDetailsService userDetailsService() {
         UserDetails user = User.withDefaultPasswordEncoder()
                 .username("user")
@@ -46,5 +28,5 @@ public class DefaultSecurityConfig {
                 .roles("USER")
                 .build();
         return new MapReactiveUserDetailsService(user);
-    }
+    }*/
 }
