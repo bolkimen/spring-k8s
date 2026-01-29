@@ -6,10 +6,6 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.context.annotation.Bean;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import reactor.core.publisher.Mono;
-import reactor.netty.http.client.HttpClient;
 
 @SpringBootApplication
 @EnableDiscoveryClient
@@ -30,6 +26,10 @@ public class ServiceGatewayApplication {
 						.path("/api/serviceb/**")
 						.filters(f -> f.addRequestHeader("Hello", "World"))
 						.uri("lb://service-b"))
+				.route(p -> p
+						.path("/login")
+						.filters(f -> f.addRequestHeader("Hello", "World"))
+						.uri("lb://service-auth-non-reactive"))
 				.build();
 	}
 
