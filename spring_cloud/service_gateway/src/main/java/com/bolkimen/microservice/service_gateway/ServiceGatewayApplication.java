@@ -1,5 +1,10 @@
 package com.bolkimen.microservice.service_gateway;
 
+import com.bolkimen.microservice.service_gateway.filter.BeforeRedirectionFilter;
+import com.bolkimen.microservice.service_gateway.filter.RedirectionFilter;
+import com.bolkimen.microservice.service_gateway.filter.redirect.CustomRequestFilter;
+import com.bolkimen.microservice.service_gateway.filter.redirect.CustomResponseFilter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
@@ -15,6 +20,18 @@ public class ServiceGatewayApplication {
 		SpringApplication.run(ServiceGatewayApplication.class, args);
 	}
 
+	@Autowired
+	BeforeRedirectionFilter beforeRedirectionFilter;
+
+	@Autowired
+	RedirectionFilter redirectionFilter;
+
+	@Autowired
+	CustomResponseFilter customResponseFilter;
+
+	@Autowired
+	CustomRequestFilter customRequestFilter;
+
 	@Bean
 	public RouteLocator myRoutes(RouteLocatorBuilder builder) {
 		return builder.routes()
@@ -26,9 +43,18 @@ public class ServiceGatewayApplication {
 						.path("/api/serviceb/**")
 						.filters(f -> f.addRequestHeader("Hello", "World"))
 						.uri("lb://service-b"))
-				.route(p -> p
-						.path("/login")
-						.filters(f -> f.addRequestHeader("Hello", "World"))
+				.route("auth-app", p -> p
+						.path("/login", "/")
+						.and().method("GET", "POST",  "PUT", "DELETE")
+						//.and().host("localhost*")
+						.filters(f -> f.filters(
+												redirectionFilter.apply(new RedirectionFilter.RedirectionFilterConfig()),
+												beforeRedirectionFilter.apply(new BeforeRedirectionFilter.Config("auth-app")),
+												customResponseFilter
+												//customRequestFilter
+										)
+								.addRequestHeader("Hello", "World")
+						)
 						.uri("lb://service-auth-non-reactive"))
 				.build();
 	}
