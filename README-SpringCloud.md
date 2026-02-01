@@ -17,3 +17,10 @@ curl -X POST user:password@localhost:8081/token -d "grant_type=client_credential
 curl -X POST user:password@localhost:8081/token -H "Authorization: Bearer $JWT_TOKEN" -d "grant_type=client_credentials" -d "scope=message:read"
 export JWT_TOKEN=...
 
+http://localhost:8073/auth-oauth/oauth2/jwks
+
+curl -v -X POST messaging-client:secret@localhost:8073/auth-oauth/oauth2/token -d "grant_type=client_credentials" -d "scope=message:read"
+curl -H "Authorization: Bearer $TOKEN" localhost:8073/api/servicea/message
+
+curl -H "Authorization: Bearer $TOKEN" localhost:8090/api/servicea/message
+

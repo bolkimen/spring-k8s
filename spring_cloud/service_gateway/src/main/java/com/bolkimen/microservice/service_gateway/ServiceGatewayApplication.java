@@ -43,11 +43,16 @@ public class ServiceGatewayApplication {
 						.path("/api/serviceb/**")
 						.filters(f -> f.addRequestHeader("Hello", "World"))
 						.uri("lb://service-b"))
+				.route(p -> p
+						.path("/auth-login/**")
+						.filters(spec -> spec.rewritePath("/auth-login/(?<segment>.*)", "/${segment}"))
+						.uri("lb://service-auth-login"))
 				.route("auth-app", p -> p
-						.path("/login", "/")
-						.and().method("GET", "POST",  "PUT", "DELETE")
+						.path("/auth-oauth/**")
+						//.and().method("GET", "POST",  "PUT", "DELETE")
 						//.and().host("localhost*")
-						.filters(f -> f.filters(
+						.filters(f -> f.rewritePath("/auth-oauth/(?<segment>.*)", "/${segment}")
+								.filters(
 												redirectionFilter.apply(new RedirectionFilter.RedirectionFilterConfig()),
 												beforeRedirectionFilter.apply(new BeforeRedirectionFilter.Config("auth-app")),
 												customResponseFilter

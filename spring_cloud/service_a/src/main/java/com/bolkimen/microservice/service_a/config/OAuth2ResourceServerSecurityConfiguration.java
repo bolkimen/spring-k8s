@@ -18,8 +18,9 @@ public class OAuth2ResourceServerSecurityConfiguration {
         // @formatter:off
         http
                 .authorizeExchange((authorize) -> authorize
-                        .pathMatchers(HttpMethod.GET, "/api/servicea/message**").hasAuthority("SCOPE_message:read")
+                        .pathMatchers(HttpMethod.GET, "/api/servicea/message**").hasAnyAuthority("SCOPE_message:read", "SCOPE_message:write")
                         .pathMatchers(HttpMethod.POST, "/api/servicea/message**").hasAuthority("SCOPE_message:write")
+                        .pathMatchers("/api/servicea/auth").hasRole("USER")
                         .pathMatchers("/api/servicea").permitAll()
                         .pathMatchers("/api/servicea/ab").permitAll()
                         .anyExchange().authenticated()
