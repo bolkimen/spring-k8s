@@ -4,8 +4,9 @@ spring:
   cloud:
     aws:
       s3:
-        endpoint: http://s3.localhost.localstack.cloud:4566
+        endpoint: https://localhost.localstack.cloud:4566
         region: us-east-1
+        #path-style-access-enabled: true
       credentials:
         access-key: none
         secret-key: none

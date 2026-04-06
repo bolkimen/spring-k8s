@@ -8,6 +8,7 @@ import org.springframework.util.StreamUtils;
 import software.amazon.awssdk.core.ResponseInputStream;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.GetObjectResponse;
+import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -26,7 +27,9 @@ public class S3ClientSample {
 
     public void readFile() throws IOException {
         // uploading file with metadata
+        //s3Template.store(BUCKET_NAME, "file.txt", createInputStream("some text"));
         s3Template.upload(BUCKET_NAME, "file.txt", createInputStream("some text"), ObjectMetadata.builder().contentType("text/plain").build());
+        //s3Template.upload(BUCKET_NAME, "file.txt", createInputStream("<doc>some text</doc>"), ObjectMetadata.builder().contentType("text/plain").build());
         ResponseInputStream<GetObjectResponse> response = s3Client.getObject(
                 request -> request.bucket(BUCKET_NAME).key("file.txt"));
 
