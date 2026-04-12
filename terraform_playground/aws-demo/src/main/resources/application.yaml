@@ -5,10 +5,16 @@ spring:
     aws:
       s3:
         endpoint: https://localhost.localstack.cloud:4566
-        region: us-east-1
+        region: eu-central-1
         #path-style-access-enabled: true
+      sqs:
+        endpoint: https://localhost.localstack.cloud:4566
+        region: eu-central-1
+      dynamodb:
+        endpoint: https://localhost.localstack.cloud:4566
+        region: eu-central-1
       credentials:
         access-key: none
         secret-key: none
       region:
-        static: us-east-1
+        static: eu-central-1
