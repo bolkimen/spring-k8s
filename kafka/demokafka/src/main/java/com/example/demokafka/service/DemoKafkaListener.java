@@ -8,6 +8,6 @@ public class DemoKafkaListener {
             autoStartup = "${listen.auto.start:true}", concurrency = "${listen.concurrency:3}")
     public void listen(String data) {
         data.toString();
-    // ...
+        System.out.println("Received: " + data);
     }
 }
