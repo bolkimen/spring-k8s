@@ -1,3 +1,5 @@
+https://hub.docker.com/r/apache/kafka
+
 Open a shell in the broker container:
 
 docker exec --workdir /opt/kafka/bin/ -it broker sh
