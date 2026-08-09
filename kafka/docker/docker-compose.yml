@@ -18,3 +18,7 @@ services:
     ports:
       - 9092:9092
       - 9093:9093
+
+networks:
+  default:
+    driver: bridge
