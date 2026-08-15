@@ -21,6 +21,20 @@ public class KafkaConsumerConfig {
     private String bootstrapAddress;
 
     @Bean
+    ConcurrentKafkaListenerContainerFactory<String, String> filterKafkaListenerContainerFactory() {
+        ConcurrentKafkaListenerContainerFactory<String, String> factory =
+                new ConcurrentKafkaListenerContainerFactory<>();
+        factory.setConsumerFactory(consumerStrFactory());
+        factory.setConcurrency(3);
+        factory.getContainerProperties().setPollTimeout(3000);
+
+        factory.setRecordFilterStrategy(
+                record -> record.value().contains("World"));
+
+        return factory;
+    }
+
+    @Bean
     KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<Integer, String>>
     kafkaListenerContainerFactory() {
         ConcurrentKafkaListenerContainerFactory<Integer, String> factory =
@@ -33,6 +47,11 @@ public class KafkaConsumerConfig {
 
     @Bean
     public ConsumerFactory<Integer, String> consumerFactory() {
+        return new DefaultKafkaConsumerFactory<>(consumerConfigs());
+    }
+
+    @Bean
+    public ConsumerFactory<String, String> consumerStrFactory() {
         return new DefaultKafkaConsumerFactory<>(consumerConfigs());
     }
 

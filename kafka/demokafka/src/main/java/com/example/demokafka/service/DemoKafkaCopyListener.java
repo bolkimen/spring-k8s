@@ -9,7 +9,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class DemoKafkaCopyListener {
     @KafkaListener(id = "myListenerCopy", topics = "${spring.kafka.topic-name}",
-            autoStartup = "${listen.auto.start:true}", concurrency = "${listen.concurrency:1}")
+            autoStartup = "${listen.auto.start:true}", concurrency = "${listen.concurrency:1}",
+            containerFactory = "filterKafkaListenerContainerFactory")
     public void listen(@Payload String message,
                        @Header(KafkaHeaders.RECEIVED_PARTITION) int partition) {
         System.out.println(

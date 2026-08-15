@@ -23,6 +23,7 @@ public class BackgroundProcessor {
         System.out.println("Running file cleanup...");
         // logic here
         sendMessage("Hello from BackgroundProcessor!");
+        sendMessage("Hello World!");
     }
 
     public void sendMessage(String message) {
