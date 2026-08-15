@@ -14,3 +14,8 @@ This command will wait for input at a > prompt. Enter hello, press Enter, then w
 Now read the events in the test-topic topic from the beginning of the log:
 
 ./kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic test-topic --from-beginning
+
+./kafka-topics.sh --bootstrap-server localhost:9092 --list
+./kafka-topics.sh --bootstrap-server localhost:9092 --describe --topic 123
+
+
