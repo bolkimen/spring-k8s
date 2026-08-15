@@ -3,3 +3,6 @@ server:
 spring:
   application:
     name: demokafka
+  kafka:
+    bootstrap-servers: localhost:9092
+    topic-name: test-topic
