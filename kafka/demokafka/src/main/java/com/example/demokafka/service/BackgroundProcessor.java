@@ -15,6 +15,6 @@ public class BackgroundProcessor {
     public void cleanOldFiles() {
         System.out.println("Running file cleanup...");
         // logic here
-        kafkaTemplate.send("myTopic", "Hello from BackgroundProcessor!");
+        kafkaTemplate.send("test-topic", "Hello from BackgroundProcessor!");
     }
 }

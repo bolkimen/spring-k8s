@@ -5,16 +5,16 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-//@Component
+@Component
 public class BackgroundProcessor {
 
     @Autowired
     private KafkaTemplate kafkaTemplate;
 
-    @Scheduled(fixedRate = 600)
+    @Scheduled(fixedRate = 1200)
     public void cleanOldFiles() {
         System.out.println("Running file cleanup...");
         // logic here
-        kafkaTemplate.send("myTopic", "Hello from BackgroundProcessor!");
+        kafkaTemplate.send("test-topic", "Hello from BackgroundProcessor!");
     }
 }

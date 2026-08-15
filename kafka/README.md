@@ -5,7 +5,7 @@ Open a shell in the broker container:
 docker exec --workdir /opt/kafka/bin/ -it broker sh
 A topic is a logical grouping of events in Kafka. From inside the container, create a topic called test-topic:
 
-./kafka-topics.sh --bootstrap-server localhost:9092 --create --topic test-topic
+./kafka-topics.sh --bootstrap-server localhost:9092 --create --topic test-topic --partitions 40
 Write two string events into the test-topic topic using the console producer that ships with Kafka:
 
 ./kafka-console-producer.sh --bootstrap-server localhost:9092 --topic test-topic
