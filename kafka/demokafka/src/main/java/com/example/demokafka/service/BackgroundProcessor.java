@@ -1,5 +1,6 @@
 package com.example.demokafka.service;
 
+import com.example.demokafka.dto.Greeting;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -13,7 +14,7 @@ import java.util.concurrent.CompletableFuture;
 public class BackgroundProcessor {
 
     @Autowired
-    private KafkaTemplate kafkaTemplate;
+    private KafkaTemplate greetingKafkaTemplate;
 
     @Value(value = "${spring.kafka.topic-name}")
     private String topicName;
@@ -24,10 +25,11 @@ public class BackgroundProcessor {
         // logic here
         sendMessage("Hello from BackgroundProcessor!");
         sendMessage("Hello World!");
+        greetingKafkaTemplate.send(topicName, new Greeting("Hello", "World"));
     }
 
     public void sendMessage(String message) {
-        CompletableFuture<SendResult<String, String>> future = kafkaTemplate.send(topicName, message);
+        CompletableFuture<SendResult<String, String>> future = greetingKafkaTemplate.send(topicName, message);
         future.whenComplete((result, ex) -> {
             if (ex == null) {
                 System.out.println("Sent message=[" + message +

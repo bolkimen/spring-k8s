@@ -1,5 +1,6 @@
 package com.example.demokafka.service;
 
+import com.example.demokafka.dto.Greeting;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.messaging.handler.annotation.Header;
@@ -15,6 +16,16 @@ public class DemoKafkaCopyListener {
                        @Header(KafkaHeaders.RECEIVED_PARTITION) int partition) {
         System.out.println(
                 "ReceivedCopy Message: " + message
+                        + "from partition: " + partition);
+    }
+
+    @KafkaListener(id = "myListenerCopyGreeting", topics = "${spring.kafka.topic-name}",
+            autoStartup = "${listen.auto.start:true}", concurrency = "${listen.concurrency:1}",
+            containerFactory = "greetingKafkaListenerContainerFactory")
+    public void listenGreeting(@Payload Greeting greeting,
+                       @Header(KafkaHeaders.RECEIVED_PARTITION) int partition) {
+        System.out.println(
+                "ReceivedCopyGreeting Message: " + greeting.getMsg()
                         + "from partition: " + partition);
     }
 }
