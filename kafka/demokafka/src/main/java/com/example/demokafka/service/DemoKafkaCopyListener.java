@@ -19,7 +19,7 @@ public class DemoKafkaCopyListener {
                         + "from partition: " + partition);
     }
 
-    @KafkaListener(id = "myListenerCopyGreeting", topics = "${spring.kafka.topic-name}",
+    /*@KafkaListener(id = "myListenerCopyGreeting", topics = "${spring.kafka.topic-name}",
             autoStartup = "${listen.auto.start:true}", concurrency = "${listen.concurrency:1}",
             containerFactory = "greetingKafkaListenerContainerFactory")
     public void listenGreeting(@Payload Greeting greeting,
@@ -27,5 +27,5 @@ public class DemoKafkaCopyListener {
         System.out.println(
                 "ReceivedCopyGreeting Message: " + greeting.getMsg()
                         + "from partition: " + partition);
-    }
+    }*/
 }
