@@ -38,6 +38,9 @@ public class KafkaProducerConfig {
         props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, IntegerSerializer.class);
         props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
         // See https://kafka.apache.org/42/documentation/#producerconfigs for more properties
+        //props.put(ProducerConfig.ACKS_CONFIG,"0"); // the producer doesn’t wait for a reply from the broker. It assumes that the message is sent successfully
+        //props.put(ProducerConfig.ACKS_CONFIG,"1"); // The producer receives a successful response from the broker the moment the leader replica receives the message.
+        props.put(ProducerConfig.ACKS_CONFIG,"all"); // The producer receives a success response from the broker once all in-sync replicas receive the message
         return props;
     }
 
