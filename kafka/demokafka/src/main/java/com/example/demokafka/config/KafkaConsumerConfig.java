@@ -69,7 +69,13 @@ public class KafkaConsumerConfig {
         props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, IntegerDeserializer.class);
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         // or factory.getContainerProperties().setAckMode(ContainerProperties.AckMode.MANUAL_IMMEDIATE);
+
+        //props.put(ConsumerConfig.AUTO_COMMIT_INTERVAL_MS_CONFIG, 7000);
+        //props.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, true);
+
         props.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, false);
+        // auto.offset.reset determines consumer behavior when it begins reading a partition without a committed offset or an invalid committed offset
+        props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "latest"); // earliest, latest, none
         //props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JacksonJsonDeserializer.class);
         return props;
     }
