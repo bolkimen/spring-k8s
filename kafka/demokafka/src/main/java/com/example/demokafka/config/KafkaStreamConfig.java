@@ -1,5 +1,6 @@
 package com.example.demokafka.config;
 
+import com.example.demokafka.dto.Order;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.StreamsConfig;
@@ -33,6 +34,22 @@ public class KafkaStreamConfig {
         props.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.String().getClass().getName());
 
         return new KafkaStreamsConfiguration(props);
+    }
+
+    @Bean
+    public KStream<String, Order> orders(StreamsBuilder builder) {
+
+        KStream<String, Order> stream = builder.stream("input-order-topic");
+
+        stream
+                .filter((key, order) -> order.getAmount() > 100)
+                .mapValues(order -> {
+                    order.setAmount(order.getAmount() * 1.23);
+                    return order;
+                })
+                .to("output-order-topic");
+
+        return stream;
     }
 
     @Bean
