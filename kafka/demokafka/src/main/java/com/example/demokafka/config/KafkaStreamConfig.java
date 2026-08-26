@@ -12,12 +12,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.annotation.KafkaStreamsDefaultConfiguration;
 import org.springframework.kafka.config.KafkaStreamsConfiguration;
+import org.springframework.kafka.support.serializer.JacksonJsonSerde;
+import org.springframework.kafka.support.serializer.JsonSerde;
 
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-
-import static org.apache.kafka.streams.StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG;
 
 @Configuration
 public class KafkaStreamConfig {
@@ -31,7 +31,7 @@ public class KafkaStreamConfig {
         props.put(StreamsConfig.APPLICATION_ID_CONFIG, "streams-app");
         props.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
         props.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass().getName());
-        props.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.String().getClass().getName());
+        props.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, JacksonJsonSerde.class);
 
         return new KafkaStreamsConfiguration(props);
     }
@@ -42,6 +42,7 @@ public class KafkaStreamConfig {
         KStream<String, Order> stream = builder.stream("input-order-topic");
 
         stream
+                .peek((key, tx) -> System.out.println("⚠️ orders FRAUD ALERT for {}" + key + " with value " + tx))
                 .filter((key, order) -> order.getAmount() > 100)
                 .mapValues(order -> {
                     order.setAmount(order.getAmount() * 1.23);
@@ -52,16 +53,17 @@ public class KafkaStreamConfig {
         return stream;
     }
 
-    @Bean
+    /*@Bean
     public KStream<String, String> pipeline(StreamsBuilder builder) {
-        KStream<String, String> stream = builder.stream("words-input");
+        KStream<String, String> stream = builder.stream("input-order-topic");
         stream
+                .peek((key, tx) -> System.out.println("⚠️ FRAUD ALERT for {}" + key + " with value " + tx))
                 .flatMapValues(line -> Arrays.asList(line.toLowerCase().split("\\W+")))
                 .filter((k, word) -> !word.isEmpty())
                 .groupBy((k, word) -> word)
                 .count(Materialized.as("word-counts"))
                 .toStream()
-                .to("words-output", Produced.with(Serdes.String(), Serdes.Long()));
+                .to("output-order-topic", Produced.with(Serdes.String(), Serdes.Long()));
         return stream;
-    }
+    }*/
 }

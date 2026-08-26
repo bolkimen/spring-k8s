@@ -29,14 +29,14 @@ public class KafkaProducerConfig {
         producerConfigs.put(
                 ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG,
                 JacksonJsonSerializer.class);
-        return new DefaultKafkaProducerFactory<>(producerConfigs());
+        return new DefaultKafkaProducerFactory<>(producerConfigs);
     }
 
     @Bean
     public Map producerConfigs() {
         Map props = new HashMap<>();
         props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
-        props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, IntegerSerializer.class);
+        props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
         props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
         // See https://kafka.apache.org/42/documentation/#producerconfigs for more properties
         //props.put(ProducerConfig.ACKS_CONFIG,"0"); // the producer doesn’t wait for a reply from the broker. It assumes that the message is sent successfully
