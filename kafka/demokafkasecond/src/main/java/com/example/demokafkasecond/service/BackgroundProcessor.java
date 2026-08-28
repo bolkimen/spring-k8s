@@ -5,6 +5,8 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.util.UUID;
+
 @Component
 public class BackgroundProcessor {
 
@@ -15,6 +17,6 @@ public class BackgroundProcessor {
     public void cleanOldFiles() {
         System.out.println("Running file cleanup...");
         // logic here
-        kafkaTemplate.send("test-topic", "Hello from BackgroundProcessor!");
+        kafkaTemplate.send("streamingTopic21", UUID.randomUUID().toString(), "Hello from BackgroundProcessor!");
     }
 }
