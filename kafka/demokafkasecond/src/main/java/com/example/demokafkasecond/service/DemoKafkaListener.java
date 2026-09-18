@@ -11,4 +11,10 @@ public class DemoKafkaListener {
     public void listen(String data) {
         System.out.println("streamingTopic22: " + data);
     }
+
+    @KafkaListener(id = "myListenerWordCount", topics = "output-topic",
+            autoStartup = "${listen.auto.start:true}")
+    public void listenWordCount(String data) {
+        System.out.println("Word count 'output-topic': " + data);
+    }
 }

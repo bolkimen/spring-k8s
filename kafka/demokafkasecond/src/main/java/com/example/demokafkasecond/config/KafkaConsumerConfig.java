@@ -1,31 +1,40 @@
 package com.example.demokafkasecond.config;
 
+import com.example.demokafkasecond.model.Customer;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
-import org.apache.kafka.common.serialization.IntegerDeserializer;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.common.serialization.StringDeserializer;
-import org.apache.kafka.streams.KeyValue;
+import org.apache.kafka.common.utils.Bytes;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.StreamsConfig;
 import org.apache.kafka.streams.kstream.*;
 import org.apache.kafka.streams.processor.WallclockTimestampExtractor;
+import org.apache.kafka.streams.state.KeyValueStore;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.kafka.annotation.EnableKafka;
+import org.springframework.kafka.annotation.EnableKafkaStreams;
 import org.springframework.kafka.annotation.KafkaStreamsDefaultConfiguration;
-import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
-import org.springframework.kafka.config.KafkaListenerContainerFactory;
 import org.springframework.kafka.config.KafkaStreamsConfiguration;
 import org.springframework.kafka.config.StreamsBuilderFactoryBeanConfigurer;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
-import org.springframework.kafka.listener.ConcurrentMessageListenerContainer;
+import org.springframework.kafka.support.serializer.JacksonJsonSerde;
 
-import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 
 @Configuration
+@EnableKafka
+@EnableKafkaStreams
 public class KafkaConsumerConfig {
+
+    @Value(value = "${spring.kafka.customers-topic-name}")
+    private String customerTopicName;
+
+    @Value(value = "${spring.kafka.customers-table-topic-name}")
+    private String customerTableTopicName;
 
     @Bean(name = KafkaStreamsDefaultConfiguration.DEFAULT_STREAMS_CONFIG_BEAN_NAME)
     public KafkaStreamsConfiguration kStreamsConfigs() {
@@ -97,4 +106,20 @@ public class KafkaConsumerConfig {
         stream.print(Printed.<String, String>toSysOut().withLabel("orderValidate22"));
         return stream;
     }*/
+
+    @Bean
+    public KTable<String, Customer> customerTable(
+            StreamsBuilder builder) {
+
+        JacksonJsonSerde<Customer> customerSerde =
+                new JacksonJsonSerde<>(Customer.class);
+
+        return builder.table(
+                customerTopicName,
+                Materialized.<String, Customer, KeyValueStore<Bytes, byte[]>>
+                                as(customerTableTopicName)
+                        .withKeySerde(Serdes.String())
+                        .withValueSerde(customerSerde)
+        );
+    }
 }

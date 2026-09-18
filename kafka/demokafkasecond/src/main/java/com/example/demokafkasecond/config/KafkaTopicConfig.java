@@ -21,4 +21,13 @@ public class KafkaTopicConfig {
                 .compact()
                 .build();
     }
+
+    @Bean
+    public NewTopic streamingOutputTopic() {
+        return TopicBuilder.name("output-topic")
+                .partitions(1)
+                .replicas(1)
+                .compact()
+                .build();
+    }
 }
