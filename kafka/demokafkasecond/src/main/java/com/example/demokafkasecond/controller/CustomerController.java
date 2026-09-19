@@ -1,6 +1,7 @@
 package com.example.demokafkasecond.controller;
 
 import com.example.demokafkasecond.model.Customer;
+import com.example.demokafkasecond.service.CustomerQueryService;
 import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.StoreQueryParameters;
@@ -25,8 +26,25 @@ public class CustomerController {
     @Value(value = "${spring.kafka.customers-table-topic-name}")
     private String customerTableTopicName;
 
-    //@Autowired
-    private KafkaStreams kafkaStreams = null;
+    @Autowired
+    private CustomerQueryService customerQueryService;
+
+    @Autowired
+    private KafkaStreams kafkaStreams;
+
+    @GetMapping("/service/{id}")
+    public ResponseEntity<Customer> getCustomerFromService(
+            @PathVariable String id) {
+
+        Customer customer =
+                customerQueryService.getCustomer(id);
+
+        if (customer == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(customer);
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<Customer> getCustomer(
