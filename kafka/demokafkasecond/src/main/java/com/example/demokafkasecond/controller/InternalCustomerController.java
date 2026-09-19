@@ -24,7 +24,7 @@ public class InternalCustomerController {
             @PathVariable String id) {
 
         Customer customer =
-                customerQueryService.getLocalCustomer(id);
+                customerQueryService.getCustomer(id);
 
         if (customer == null) {
             return ResponseEntity.notFound().build();

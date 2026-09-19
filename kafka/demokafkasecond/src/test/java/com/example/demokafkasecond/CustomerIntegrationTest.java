@@ -22,7 +22,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ActiveProfiles("test")
 @EmbeddedKafka(
         partitions = 1,
-        topics = "customers"
+        topics = "customers",
+        bootstrapServersProperty = "spring.kafka.bootstrap-servers"
 )
 public class CustomerIntegrationTest {
     @Autowired
@@ -30,6 +31,47 @@ public class CustomerIntegrationTest {
 
     @Autowired
     private TestRestTemplate restTemplate;
+
+    @Test
+    void shouldReadCustomerFromKTableThroughRestApiV2() {
+
+        Customer customer = new Customer(
+                "123",
+                "John",
+                "john@example.com"
+        );
+
+        kafkaTemplate.send(
+                "customers",
+                "123",
+                customer
+        );
+
+        Awaitility.await()
+                .atMost(Duration.ofSeconds(15))
+                .pollInterval(Duration.ofMillis(200))
+                .untilAsserted(() -> {
+
+                    ResponseEntity<Customer> response =
+                            restTemplate.getForEntity(
+                                    "/api/customers/123",
+                                    Customer.class
+                            );
+
+                    assertThat(response.getStatusCode())
+                            .isEqualTo(HttpStatus.OK);
+
+                    Customer result = response.getBody();
+
+                    assertThat(result).isNotNull();
+                    assertThat(result.getId())
+                            .isEqualTo("123");
+                    assertThat(result.getName())
+                            .isEqualTo("John");
+                    assertThat(result.getEmail())
+                            .isEqualTo("john@example.com");
+                });
+    }
 
     @Test
     void shouldReadCustomerFromKTableThroughRestApi()

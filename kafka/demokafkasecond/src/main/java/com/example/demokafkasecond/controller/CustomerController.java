@@ -11,6 +11,7 @@ import org.apache.kafka.streams.state.ReadOnlyKeyValueStore;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
+import org.springframework.kafka.config.StreamsBuilderFactoryBean;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,7 +31,7 @@ public class CustomerController {
     private CustomerQueryService customerQueryService;
 
     @Autowired
-    private KafkaStreams kafkaStreams;
+    private StreamsBuilderFactoryBean streamsBuilderFactoryBean;
 
     @GetMapping("/service/{id}")
     public ResponseEntity<Customer> getCustomerFromService(
@@ -49,6 +50,7 @@ public class CustomerController {
     @GetMapping("/{id}")
     public ResponseEntity<Customer> getCustomer(
             @PathVariable String id) {
+        KafkaStreams kafkaStreams = getKafkaStreams();
 
         ReadOnlyKeyValueStore<String, Customer> store =
                 kafkaStreams.store(
@@ -69,6 +71,7 @@ public class CustomerController {
 
     @GetMapping
     public List<Customer> getCustomers() {
+        KafkaStreams kafkaStreams = getKafkaStreams();
 
         ReadOnlyKeyValueStore<String, Customer> store =
                 kafkaStreams.store(
@@ -90,5 +93,18 @@ public class CustomerController {
         }
 
         return customers;
+    }
+
+    private KafkaStreams getKafkaStreams() {
+        KafkaStreams kafkaStreams =
+                streamsBuilderFactoryBean.getKafkaStreams();
+
+        if (kafkaStreams == null) {
+            throw new IllegalStateException(
+                    "Kafka Streams has not started yet"
+            );
+        }
+
+        return kafkaStreams;
     }
 }
