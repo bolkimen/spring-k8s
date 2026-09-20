@@ -29,10 +29,10 @@ public class BackgroundProcessor {
 
         kafkaTemplate.send("input-topic", UUID.randomUUID().toString(), "Hello word " + UUID.randomUUID().toString());
 
-        /*customerKafkaTemplate.send(
+        customerKafkaTemplate.send(
                 customerTopicName,
                 "123",
                 new Customer("123", "John", "john@lalalala.com")
-        );*/
+        );
     }
 }
