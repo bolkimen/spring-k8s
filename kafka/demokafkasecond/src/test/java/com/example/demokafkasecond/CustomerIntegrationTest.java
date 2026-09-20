@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.resttestclient.TestRestTemplate;
 import org.springframework.boot.resttestclient.autoconfigure.AutoConfigureTestRestTemplate;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -31,7 +32,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ActiveProfiles("test")
 @EmbeddedKafka(
         partitions = 1,
-        topics = "customers",
+        topics = "customers-table-test-topic",
         bootstrapServersProperty = "spring.kafka.bootstrap-servers"
 )
 public class CustomerIntegrationTest {
@@ -43,6 +44,17 @@ public class CustomerIntegrationTest {
 
     @Autowired
     private WebApplicationContext context;
+
+    @Autowired
+    private Environment environment;
+
+    @Test
+    void printKafkaBootstrapServer() {
+        System.out.println(
+                "BOOTSTRAP = " +
+                        environment.getProperty("spring.kafka.bootstrap-servers")
+        );
+    }
 
     @Test
     void printMappings() throws Exception {

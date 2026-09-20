@@ -2,7 +2,7 @@ spring:
   application:
     name: demokafkasecond
   kafka:
-    bootstrap-servers: localhost:9092
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS}
     streams:
       application-id: my-app
     customers-topic-name: customers-test-topic
