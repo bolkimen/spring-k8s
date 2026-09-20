@@ -12,8 +12,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 
 import java.time.Duration;
+import java.util.List;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -34,18 +41,34 @@ public class CustomerIntegrationTest {
     @Autowired
     private TestRestTemplate restTemplate;
 
+    @Autowired
+    private WebApplicationContext context;
+
+    @Test
+    void printMappings() throws Exception {
+
+        MockMvc mockMvc = MockMvcBuilders
+                .webAppContextSetup(context)
+                .build();
+
+        mockMvc.perform(
+                        MockMvcRequestBuilders.get("/api/customer/123")
+                )
+                .andDo(MockMvcResultHandlers.print());
+    }
+
     @Test
     void shouldReadCustomerFromKTableThroughRestApiV2() {
 
         Customer customer = new Customer(
-                "123",
+                UUID.randomUUID().toString(),
                 "John",
                 "john@example.com"
         );
 
         customerKafkaTemplate.send(
                 "customers",
-                "123",
+                customer.getId(),
                 customer
         );
 
@@ -56,7 +79,7 @@ public class CustomerIntegrationTest {
 
                     ResponseEntity<Customer> response =
                             restTemplate.getForEntity(
-                                    "/api/customers/123",
+                                    "/api/customer/" + customer.getId(),
                                     Customer.class
                             );
 
@@ -67,9 +90,9 @@ public class CustomerIntegrationTest {
 
                     assertThat(result).isNotNull();
                     assertThat(result.getId())
-                            .isEqualTo("123");
+                            .isEqualTo(customer.getId());
                     assertThat(result.getName())
-                            .isEqualTo("John");
+                            .isEqualTo(customer.getName());
                     assertThat(result.getEmail())
                             .isEqualTo("john@example.com");
                 });
@@ -121,9 +144,18 @@ public class CustomerIntegrationTest {
                 .pollInterval(Duration.ofMillis(200))
                 .untilAsserted(() -> {
 
+                    ResponseEntity<List> allCustomersResponse =
+                            restTemplate.getForEntity(
+                                    "/api/customer",
+                                    List.class
+                            );
+
+                    assertThat(allCustomersResponse.getStatusCode())
+                            .isEqualTo(HttpStatus.OK);
+
                     ResponseEntity<Customer> response =
                             restTemplate.getForEntity(
-                                    "/api/customers/" + id,
+                                    "/api/customer/" + id,
                                     Customer.class
                             );
 
@@ -132,7 +164,7 @@ public class CustomerIntegrationTest {
                 });
 
         return restTemplate.getForEntity(
-                "/api/customers/" + id,
+                "/api/customer/" + id,
                 Customer.class
         );
     }
