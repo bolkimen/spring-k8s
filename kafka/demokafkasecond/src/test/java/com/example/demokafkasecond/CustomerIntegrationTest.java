@@ -5,6 +5,7 @@ import org.apache.kafka.streams.KafkaStreams;
 import org.awaitility.Awaitility;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.resttestclient.TestRestTemplate;
 import org.springframework.boot.resttestclient.autoconfigure.AutoConfigureTestRestTemplate;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -34,10 +35,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ActiveProfiles("test")
 @EmbeddedKafka(
         partitions = 1,
-        topics = "customers-table-test-topic",
+        topics = "${spring.kafka.customers-table-topic-name}",
         bootstrapServersProperty = "spring.kafka.bootstrap-servers"
 )
 public class CustomerIntegrationTest {
+
+    @Value(value = "${spring.kafka.customers-topic-name}")
+    private String customerTopicName;
+
     @Autowired
     private StreamsBuilderFactoryBean streamsBuilderFactoryBean;
 
@@ -86,7 +91,7 @@ public class CustomerIntegrationTest {
         );
 
         customerKafkaTemplate.send(
-                "customers",
+                customerTopicName,
                 customer.getId(),
                 customer
         );
@@ -125,14 +130,14 @@ public class CustomerIntegrationTest {
 
         // Given
         Customer customer = new Customer(
-                "123",
+                UUID.randomUUID().toString(),
                 "John",
                 "john@example.com"
         );
 
         customerKafkaTemplate.send(
-                "customers",
-                "123",
+                customerTopicName,
+                customer.getId(),
                 customer
         ).get();
 
@@ -140,7 +145,7 @@ public class CustomerIntegrationTest {
 
         // When
         ResponseEntity<Customer> response =
-                awaitCustomer("123");
+                awaitCustomer(customer.getId());
 
         // Then
         assertThat(response.getStatusCode())
@@ -150,7 +155,7 @@ public class CustomerIntegrationTest {
                 .isNotNull();
 
         assertThat(response.getBody().getId())
-                .isEqualTo("123");
+                .isEqualTo(customer.getId());
 
         assertThat(response.getBody().getName())
                 .isEqualTo("John");
