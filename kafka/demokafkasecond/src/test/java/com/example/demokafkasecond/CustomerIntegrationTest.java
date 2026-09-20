@@ -29,7 +29,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 )
 public class CustomerIntegrationTest {
     @Autowired
-    private KafkaTemplate<String, Customer> kafkaTemplate;
+    private KafkaTemplate<String, Customer> customerKafkaTemplate;
 
     @Autowired
     private TestRestTemplate restTemplate;
@@ -43,7 +43,7 @@ public class CustomerIntegrationTest {
                 "john@example.com"
         );
 
-        kafkaTemplate.send(
+        customerKafkaTemplate.send(
                 "customers",
                 "123",
                 customer
@@ -86,7 +86,7 @@ public class CustomerIntegrationTest {
                 "john@example.com"
         );
 
-        kafkaTemplate.send(
+        customerKafkaTemplate.send(
                 "customers",
                 "123",
                 customer
