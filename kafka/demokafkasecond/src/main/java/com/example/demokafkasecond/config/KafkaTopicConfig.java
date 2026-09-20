@@ -13,11 +13,26 @@ import java.util.List;
 @Configuration
 public class KafkaTopicConfig {
 
+    @Value(value = "${spring.kafka.customers-topic-name}")
+    private String customerTopicName;
+
+    @Value(value = "${spring.kafka.customers-table-topic-name}")
+    private String customerTableTopicName;
+
     @Bean
     public NewTopic streamingTopic22Topic() {
         return TopicBuilder.name("streamingTopic22")
                 .partitions(11)
-                .replicas(3)
+                .replicas(1)
+                .compact()
+                .build();
+    }
+
+    @Bean
+    public NewTopic createInputTopic() {
+        return TopicBuilder.name("input-topic")
+                .partitions(1)
+                .replicas(1)
                 .compact()
                 .build();
     }
@@ -25,6 +40,24 @@ public class KafkaTopicConfig {
     @Bean
     public NewTopic streamingOutputTopic() {
         return TopicBuilder.name("output-topic")
+                .partitions(1)
+                .replicas(1)
+                .compact()
+                .build();
+    }
+
+    @Bean
+    public NewTopic createCustomerTopicName() {
+        return TopicBuilder.name(customerTopicName)
+                .partitions(1)
+                .replicas(1)
+                .compact()
+                .build();
+    }
+
+    @Bean
+    public NewTopic createCustomerTableTopicName() {
+        return TopicBuilder.name(customerTableTopicName)
                 .partitions(1)
                 .replicas(1)
                 .compact()

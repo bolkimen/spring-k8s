@@ -2,6 +2,7 @@ package com.example.demokafkasecond.config;
 
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
@@ -14,6 +15,9 @@ import java.util.Map;
 
 @Configuration
 public class KafkaProducerConfig {
+    @Value(value = "${spring.kafka.bootstrap-servers}")
+    private String kafkaBootstrapServers;
+
     @Bean
     public ProducerFactory producerFactory() {
         return new DefaultKafkaProducerFactory<>(producerConfigs());
@@ -22,7 +26,7 @@ public class KafkaProducerConfig {
     @Bean
     public Map producerConfigs() {
         Map props = new HashMap<>();
-        props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
+        props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaBootstrapServers);
         props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
         props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
         // See https://kafka.apache.org/42/documentation/#producerconfigs for more properties
@@ -37,7 +41,7 @@ public class KafkaProducerConfig {
     @Bean
     public Map customerProducerConfigs() {
         Map props = new HashMap<>();
-        props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
+        props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaBootstrapServers);
         props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
         props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JacksonJsonSerializer.class);
         // See https://kafka.apache.org/42/documentation/#producerconfigs for more properties
