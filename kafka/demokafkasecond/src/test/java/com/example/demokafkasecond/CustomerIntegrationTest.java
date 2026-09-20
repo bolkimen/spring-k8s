@@ -1,6 +1,7 @@
 package com.example.demokafkasecond;
 
 import com.example.demokafkasecond.model.Customer;
+import org.apache.kafka.streams.KafkaStreams;
 import org.awaitility.Awaitility;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.kafka.config.StreamsBuilderFactoryBean;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.test.context.ActiveProfiles;
@@ -37,6 +39,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 )
 public class CustomerIntegrationTest {
     @Autowired
+    private StreamsBuilderFactoryBean streamsBuilderFactoryBean;
+
+    @Autowired
     private KafkaTemplate<String, Customer> customerKafkaTemplate;
 
     @Autowired
@@ -58,6 +63,8 @@ public class CustomerIntegrationTest {
 
     @Test
     void printMappings() throws Exception {
+
+        awaitKafkaStreamsRunning();
 
         MockMvc mockMvc = MockMvcBuilders
                 .webAppContextSetup(context)
@@ -83,6 +90,8 @@ public class CustomerIntegrationTest {
                 customer.getId(),
                 customer
         );
+
+        awaitKafkaStreamsRunning();
 
         Awaitility.await()
                 .atMost(Duration.ofSeconds(15))
@@ -126,6 +135,8 @@ public class CustomerIntegrationTest {
                 "123",
                 customer
         ).get();
+
+        awaitKafkaStreamsRunning();
 
         // When
         ResponseEntity<Customer> response =
@@ -179,5 +190,18 @@ public class CustomerIntegrationTest {
                 "/api/customer/" + id,
                 Customer.class
         );
+    }
+
+    private void awaitKafkaStreamsRunning() {
+        Awaitility.await()
+                .atMost(Duration.ofSeconds(30))
+                .pollInterval(Duration.ofMillis(200))
+                .until(() -> {
+                    KafkaStreams kafkaStreams =
+                            streamsBuilderFactoryBean.getKafkaStreams();
+
+                    return kafkaStreams != null
+                            && kafkaStreams.state() == KafkaStreams.State.RUNNING;
+                });
     }
 }
