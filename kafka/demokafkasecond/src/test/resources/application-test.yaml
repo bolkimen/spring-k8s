@@ -4,6 +4,3 @@ spring:
       application-id: customer-streams-test
       properties:
         application.server: localhost:18080
-
-server:
-  port: 18080
