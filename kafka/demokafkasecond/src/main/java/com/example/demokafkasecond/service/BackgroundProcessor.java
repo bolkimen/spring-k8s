@@ -30,7 +30,7 @@ public class BackgroundProcessor {
         // logic here
         kafkaTemplate.send("streamingTopic21", UUID.randomUUID().toString(), "Hello from BackgroundProcessor!");
 
-        kafkaTemplate.send(wordcountInputTopic, UUID.randomUUID().toString(), "Hello word " + UUID.randomUUID());
+        kafkaTemplate.send(wordcountInputTopic, UUID.randomUUID().toString(), "Hello word");
 
         customerKafkaTemplate.send(
                 customerTopicName,

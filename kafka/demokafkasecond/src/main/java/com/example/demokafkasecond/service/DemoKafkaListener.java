@@ -1,5 +1,6 @@
 package com.example.demokafkasecond.service;
 
+import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
@@ -17,7 +18,9 @@ public class DemoKafkaListener {
 
     @KafkaListener(id = "myListenerWordCount", topics = "${spring.kafka.wordcount-output-topic}",
             autoStartup = "${listen.auto.start:true}")
-    public void listenWordCount(String data) {
-        System.out.println("Word count '%s': ".formatted(wordcountOutputTopic) + data);
+    public void listenWordCount(ConsumerRecord<String, Long> record) {
+        String word = record.key();
+        Long count = -1L;//record.value();
+        System.out.println("Topic: '%s'. Word: '%s' count: %s: ".formatted(wordcountOutputTopic, word, count));
     }
 }
