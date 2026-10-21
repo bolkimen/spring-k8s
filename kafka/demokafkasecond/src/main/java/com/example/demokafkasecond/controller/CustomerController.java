@@ -22,16 +22,13 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/customer")
-public class CustomerController {
+public class CustomerController extends BaseKafkaStreamsController {
 
     @Value(value = "${spring.kafka.customers-table-topic-name}")
     private String customerTableTopicName;
 
     @Autowired
     private CustomerQueryService customerQueryService;
-
-    @Autowired
-    private StreamsBuilderFactoryBean streamsBuilderFactoryBean;
 
     @GetMapping("/service/{id}")
     public ResponseEntity<Customer> getCustomerFromService(
@@ -95,16 +92,4 @@ public class CustomerController {
         return customers;
     }
 
-    private KafkaStreams getKafkaStreams() {
-        KafkaStreams kafkaStreams =
-                streamsBuilderFactoryBean.getKafkaStreams();
-
-        if (kafkaStreams == null) {
-            throw new IllegalStateException(
-                    "Kafka Streams has not started yet"
-            );
-        }
-
-        return kafkaStreams;
-    }
 }

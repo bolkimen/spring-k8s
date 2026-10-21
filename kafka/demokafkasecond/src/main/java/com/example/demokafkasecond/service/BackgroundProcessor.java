@@ -15,6 +15,9 @@ public class BackgroundProcessor {
     @Value(value = "${spring.kafka.customers-topic-name}")
     private String customerTopicName;
 
+    @Value(value = "${spring.kafka.wordcount-input-topic}")
+    private String wordcountInputTopic;
+
     @Autowired
     private KafkaTemplate kafkaTemplate;
 
@@ -27,7 +30,7 @@ public class BackgroundProcessor {
         // logic here
         kafkaTemplate.send("streamingTopic21", UUID.randomUUID().toString(), "Hello from BackgroundProcessor!");
 
-        kafkaTemplate.send("input-topic", UUID.randomUUID().toString(), "Hello word " + UUID.randomUUID().toString());
+        kafkaTemplate.send(wordcountInputTopic, UUID.randomUUID().toString(), "Hello word " + UUID.randomUUID());
 
         customerKafkaTemplate.send(
                 customerTopicName,

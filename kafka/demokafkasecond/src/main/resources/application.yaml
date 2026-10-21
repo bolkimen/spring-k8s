@@ -7,3 +7,6 @@ spring:
       application-id: my-app
     customers-topic-name: customers-test-topic
     customers-table-topic-name: customers-table-test-topic
+    wordcount-input-topic: wordcount-input-topic
+    wordcount-output-topic: wordcount-output-topic
+    wordcount-table-topic-name: wordcount-table-test-topic
